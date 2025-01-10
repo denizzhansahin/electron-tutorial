@@ -13,8 +13,26 @@
 </head>
 
 <body>
-    <h1>Denizhan</h1>
-    <button class="btn btn-primary">Test</button>
+    <h1 class="text-center">Denizhan</h1>
+    <input type="text" class="form-control" id="value">
+    <button class="btn btn-primary" id="sendBtn1">Test</button>
 </body>
+
+<script>
+    const electron = window.require('electron');
+    const { ipcRenderer } = electron;//veri transferi için kullanılır, event yollamak için kullanılır
+
+    let sendBtn = document.querySelector('#sendBtn1');
+    let imputValue = document.querySelector('#value');
+
+    sendBtn.addEventListener('click', () => {
+        //alert('Test');
+        console.log("data")
+        
+        
+        //ipcRenderer.send('key', 'value, yani Denizhan');
+        ipcRenderer.send('key:inputValue', imputValue.value);
+    });
+</script>
 
 </html>

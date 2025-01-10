@@ -2,7 +2,7 @@ const electron = require('electron');
 const url = require('url');
 const path = require('path');
 
-const { app, BrowserWindow, Menu } = electron;
+const { app, BrowserWindow, Menu,ipcMain } = electron;
 let mainWindow;
 
 app.on('ready', () => {
@@ -10,7 +10,12 @@ app.on('ready', () => {
     console.log(process.platform)//işletim sistemi bilgisi
 
     console.log("Uygulama çalışıyor")
-    mainWindow = new BrowserWindow({})//pencere oluştur
+    mainWindow = new BrowserWindow({
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: false
+        }
+    })//pencere oluştur
     mainWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'main.html'),
         protocol: 'file',
@@ -20,6 +25,16 @@ app.on('ready', () => {
     //menu ekleme
     const mainMenu = Menu.buildFromTemplate(mainMenuTemplate1);
     Menu.setApplicationMenu(mainMenu);//uygulamayı set et
+
+    //ipcMain, ipcRenderer ile gelen veriyi almak
+    ipcMain.on("key",(err,data)=>{
+
+        console.log(data)
+    })
+
+    ipcMain.on("key:inputValue",(err,data)=>{
+        console.log(data)
+    })
 })
 
 //menu template 
