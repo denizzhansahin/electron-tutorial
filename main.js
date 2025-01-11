@@ -2,7 +2,7 @@ const electron = require('electron');
 const url = require('url');
 const path = require('path');
 
-const { app, BrowserWindow, Menu,ipcMain } = electron;
+const { app, BrowserWindow, Menu, ipcMain } = electron;
 let mainWindow;
 
 app.on('ready', () => {
@@ -27,13 +27,22 @@ app.on('ready', () => {
     Menu.setApplicationMenu(mainMenu);//uygulamayı set et
 
     //ipcMain, ipcRenderer ile gelen veriyi almak
-    ipcMain.on("key",(err,data)=>{
+    ipcMain.on("key", (err, data) => {
 
         console.log(data)
     })
 
-    ipcMain.on("key:inputValue",(err,data)=>{
+    ipcMain.on("key:inputValue", (err, data) => {
         console.log(data)
+    })
+
+    //Yeni pencere
+    ipcMain.on("key:newWindow", (err, data) => {
+        createWindow();
+    })
+
+    mainWindow.on('closed', () => {
+        app.quit();//uygulamayı kapat
     })
 })
 
@@ -67,16 +76,35 @@ if (process.env.NODE_ENV !== 'production') { //geliştirme modunda
             label: 'Dev Tools',
             submenu: [
                 {
-                label: "Geliştirici Penceresi Aç",
-                click(item, focusWindow) {//nerede açılacağını belirler
-                    focusWindow.toggleDevTools();
+                    label: "Geliştirici Penceresi Aç",
+                    click(item, focusWindow) {//nerede açılacağını belirler
+                        focusWindow.toggleDevTools();
+                    }
+                },
+                {
+                    label: "Yenile",
+                    role: "reload"
                 }
-            },
-            {
-                label: "Yenile",
-                role: "reload"
-            }
-        ]
+            ]
         }
     )
+}
+
+
+function createWindow() {
+    addWindow = new BrowserWindow({
+        width: 300,
+        height: 200,
+        title: "Yeni Pencere",
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: false
+        }
+    }), 
+    
+    addWindow.loadURL(url.format({
+        pathname: path.join(__dirname, 'modal.html'),
+        protocol: 'file',
+        slashes: true,//file://main.html
+    }))
 }

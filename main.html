@@ -16,6 +16,7 @@
     <h1 class="text-center">Denizhan</h1>
     <input type="text" class="form-control" id="value">
     <button class="btn btn-primary" id="sendBtn1">Test</button>
+    <div class="col-md-8 btn btn-warning" id="openNewBtn">Yeni Bir Pencere Aç</div>
 </body>
 
 <script>
@@ -24,6 +25,11 @@
 
     let sendBtn = document.querySelector('#sendBtn1');
     let imputValue = document.querySelector('#value');
+
+    let openNewBtn = document.querySelector('#openNewBtn');
+    openNewBtn.addEventListener('click', () => {
+        ipcRenderer.send('key:newWindow');
+    });
 
     sendBtn.addEventListener('click', () => {
         //alert('Test');
