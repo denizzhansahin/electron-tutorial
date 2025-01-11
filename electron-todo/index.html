@@ -41,6 +41,7 @@
 <script>
     const electron = window.require('electron');
     const { ipcRenderer } = electron;//veri transferi için kullanılır, event yollamak için kullanılır
+    checkTodoList();
 
     let sendBtn = document.querySelector('#sendBtn1');
     let imputValue = document.querySelector('#value');
@@ -75,6 +76,7 @@
         col.appendChild(deleteBtn);
         row.appendChild(col);
         container.appendChild(row);
+        checkTodoList();
     });
 
     sendBtn.addEventListener('click', () => {
@@ -88,7 +90,15 @@
 
 
 
-
+    function checkTodoList() {
+        const todoContainer = document.querySelector('.todo-container');
+        const alertContainer = document.querySelector('.alert-container');
+        if (todoContainer.children.length !== 0) {
+            alertContainer.style.display = 'none';
+        } else {
+            alertContainer.style.display = 'block';
+        }
+    }
 
     /*
         <div class="row">
