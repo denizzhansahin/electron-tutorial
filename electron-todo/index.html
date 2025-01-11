@@ -30,6 +30,11 @@
         ipcRenderer.send('key:newWindow');
     });
 
+    ipcRenderer.on("todo:addItem", (e, todoList) => {
+        console.log(todoList); // Process the received todoList
+        // You can update the DOM with the todoList here
+    });
+
     sendBtn.addEventListener('click', () => {
         //alert('Test');
         console.log("data")
@@ -38,6 +43,9 @@
         //ipcRenderer.send('key', 'value, yani Denizhan');
         ipcRenderer.send('key:inputValue', imputValue.value);
     });
+
+
+
 </script>
 
 </html>
