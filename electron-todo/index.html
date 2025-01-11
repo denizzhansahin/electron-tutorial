@@ -13,8 +13,28 @@
 </head>
 
 <body>
-<h1>Merhaba</h1>
-<div class="col-md-8 btn btn-warning" id="openNewBtn">Yeni Bir Pencere Aç</div>
+    <h1>Merhaba</h1>
+    <div class="col-md-8 btn btn-warning" id="openNewBtn">Yeni Bir Pencere Aç</div>
+    <div class="container main-container pt-5">
+        <h3 class="text-center">Electron.js ile ToDo App</h3>
+        <div class="row">
+            <div class="col-md-6 offset-3 mt-5 d-flex">
+                <input type="text" id="value" class="form-control form-control-lg mr-1" placeholder="Yeni yapılacak...">
+                <button id="sendBtn1" class="btn btn-outline-dark">Ekle</button>
+            </div>
+        </div>
+        <h3 class="text-center mt-5 mb-3">Yapılacaklar Listesi</h3>
+        <div class="todo-container container">
+        </div>
+
+        <div class="alert-container row">
+            <div class="alert alert-warning col-md-8 offset-2">
+                <b>TODO yok</b>
+            </div>
+        </div>
+
+    </div>
+
 </body>
 
 
@@ -30,22 +50,56 @@
         ipcRenderer.send('key:newWindow');
     });
 
-    ipcRenderer.on("todo:addItem", (e, todoList) => {
-        console.log(todoList); // Process the received todoList
+    ipcRenderer.on("todo:addItem", (e, todo) => {
+        console.log(todo); // Process the received todoList
         // You can update the DOM with the todoList here
+        const container = document.querySelector('.todo-container');
+        const row = document.createElement('div')
+        row.className = 'row';
+        const col = document.createElement('div');
+        col.className = "todo-item background-color: #582E48!important p-2 mb-3 text-light bg-dark col-md-8 offset-2 shadow card d-flex justify-content-center flex-row"
+        col.style.backgroundColor = "#582E48!important";
+        const p = document.createElement('p');
+        p.className = "m-0 w-100";
+        p.innerHTML = todo.text
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = "btn btn-sm btn-outline-danger flex-shrink-1";
+        deleteBtn.innerHTML = "X";
+        deleteBtn.addEventListener('click', () => {
+            if (confirm('Silmek istediğinize emin misiniz?')) {
+                //TODO
+            }
+        });
+
+        col.appendChild(p);
+        col.appendChild(deleteBtn);
+        row.appendChild(col);
+        container.appendChild(row);
     });
 
     sendBtn.addEventListener('click', () => {
         //alert('Test');
         console.log("data")
-        
-        
+
+
         //ipcRenderer.send('key', 'value, yani Denizhan');
         ipcRenderer.send('key:inputValue', imputValue.value);
     });
 
 
 
+
+
+    /*
+        <div class="row">
+            <div style="background-color: #582E48!important" 
+                class="p-2 mb-3 text-light bg-dark col-md-8 offset-2 shadow card d-flex justify-content-center flex-row">
+                <p class="m-0 w-100">Bu bir yapılacak listesidir...</p>
+                <button class="btn btn-sm btn-outline-warning flex-shrink-1 mr-1">Düzenle</button>
+                <button class="btn btn-sm btn-outline-danger flex-shrink-1">X</button>
+            </div>
+        </div>
+    */
 </script>
 
 </html>
