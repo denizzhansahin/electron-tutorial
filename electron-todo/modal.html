@@ -15,8 +15,35 @@
         <div class="row">
             <div class="col-md-8 offset-2 text-center">
                 <h1>Yeni Pencere</h1>
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <input type="text" name="" id="todoValue" class="form-control mt-3 mb-3" value="Buraya değişecek değer yazzzzzzzzz">
+                        <a href="#" class="card-link btn btn-sm btn-outline-danger" id="cancelBtn">Vazgeç</a>
+                        <a href="#" class="card-link btn btn-sm btn-outline-danger" id="saveBtn">Güncelle</a>
+                    </h5>
+                </div>
             </div>
         </div>
     </div>
 </body>
+
+
+<script>
+    const electron = window.require('electron');
+    const { ipcRenderer } = electron;//veri transferi için kullanılır, event yollamak için kullanılır
+
+    let cancelBtn = document.querySelector('#cancelBtn');
+    let saveBtn = document.querySelector('#saveBtn');
+    let todoValue = document.querySelector('#todoValue');
+
+    cancelBtn.addEventListener('click', () => {
+        ipcRenderer.send('newTodo:close');
+    });
+
+    saveBtn.addEventListener('click', () => {
+        ipcRenderer.send('newTodo:save',todoValue.value);
+    });
+
+</script>
+
 </html>

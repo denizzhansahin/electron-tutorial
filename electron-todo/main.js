@@ -3,7 +3,8 @@ const url = require('url');
 const path = require('path');
 
 const { app, BrowserWindow, Menu, ipcMain } = electron;
-let mainWindow;
+let mainWindow, addWindow;
+let todoList = []
 
 
 app.on('ready', () => {
@@ -34,6 +35,23 @@ app.on('ready', () => {
 
     mainWindow.on('closed', () => {
         app.quit();//uygulamayı kapat
+    })
+
+
+    ipcMain.on("newTodo:close", (err, data) => {
+        addWindow.close();
+        addWindow = null;
+    })
+
+    ipcMain.on("newTodo:save", (err, data) => {
+        //console.log(data);
+        if(data){
+            todoList.push({
+                id: todoList.length + 1,
+                text: data,
+            })
+        }
+        console.log(todoList);
     })
 })
 
@@ -85,13 +103,14 @@ if (process.env.NODE_ENV !== 'production') { //geliştirme modunda
 
 function createWindow() {
     addWindow = new BrowserWindow({
-        width: 300,
-        height: 200,
+        width: 500,
+        height: 500,
         title: "Yeni Pencere",
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false
-        }
+        },
+        frame:false,
     }),
 
     addWindow.setResizable(false);//boyutlandırma
@@ -109,4 +128,9 @@ function createWindow() {
         })
         
 
+}
+
+function getTodos() {
+    console.log(todoList);
+    return todoList;
 }
