@@ -46,6 +46,22 @@
     let sendBtn = document.querySelector('#sendBtn1');
     let imputValue = document.querySelector('#value');
 
+    const todoValue = document.querySelector('#value')
+    todoValue.addEventListener("keypress",e=>{
+        if(e.keyCode==13){
+            ipcRenderer.send("newTodo:save",{
+                ref:"main",
+                todoValue:e.target.value
+            })
+            e.target.value = "";
+        }
+    })
+
+    document.querySelector('#value').addEventListener('input', (e) => {
+        ipcRenderer.send('newTodo:save', {ref:"main",todoValue: e.target.value});
+        todoValue = e.target.value;
+    });
+
     let openNewBtn = document.querySelector('#openNewBtn');
     openNewBtn.addEventListener('click', () => {
         ipcRenderer.send('key:newWindow');
