@@ -107,4 +107,10 @@ function createWindow() {
         protocol: 'file',
         slashes: true,//file://main.html
     }))
+
+    ,
+
+    addWindow.on('close', () => {
+        addWindow = null; //bellekte yer kaplamasın
+    })
 }
