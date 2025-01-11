@@ -7,21 +7,34 @@ let mainWindow;
 
 
 app.on('ready', () => {
-        mainWindow = new BrowserWindow({
-            webPreferences: {
-                nodeIntegration: true,
-                contextIsolation: false
-            }
-        })//pencere oluştur
-        mainWindow.loadURL(url.format({
-            pathname: path.join(__dirname, 'index.html'),
-            protocol: 'file',
-            slashes: true,//file://main.html
-        }))
-    
-        //menu ekleme
-        const mainMenu = Menu.buildFromTemplate(mainMenuTemplate1);
-        Menu.setApplicationMenu(mainMenu);//uygulamayı set et
+    mainWindow = new BrowserWindow({
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: false
+        },
+        frame: true,//pencere kenarlarını açma
+    })//pencere oluştur
+    mainWindow.loadURL(url.format({
+        pathname: path.join(__dirname, 'index.html'),
+        protocol: 'file',
+        slashes: true,//file://main.html
+    }))
+
+    mainWindow.setResizable(false);//boyutlandırma
+
+
+    //menu ekleme
+    const mainMenu = Menu.buildFromTemplate(mainMenuTemplate1);
+    Menu.setApplicationMenu(mainMenu);//uygulamayı set et
+
+    //Yeni pencere
+    ipcMain.on("key:newWindow", (err, data) => {
+        createWindow();
+    })
+
+    mainWindow.on('closed', () => {
+        app.quit();//uygulamayı kapat
+    })
 })
 
 
@@ -70,3 +83,30 @@ if (process.env.NODE_ENV !== 'production') { //geliştirme modunda
     )
 }
 
+function createWindow() {
+    addWindow = new BrowserWindow({
+        width: 300,
+        height: 200,
+        title: "Yeni Pencere",
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: false
+        }
+    }),
+
+    addWindow.setResizable(false);//boyutlandırma
+
+        addWindow.loadURL(url.format({
+            pathname: path.join(__dirname, 'modal.html'),
+            protocol: 'file',
+            slashes: true,//file://main.html
+        }))
+
+        ,
+
+        addWindow.on('close', () => {
+            addWindow = null; //bellekte yer kaplamasın
+        })
+        
+
+}

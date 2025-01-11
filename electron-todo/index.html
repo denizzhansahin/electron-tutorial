@@ -14,6 +14,30 @@
 
 <body>
 <h1>Merhaba</h1>
+<div class="col-md-8 btn btn-warning" id="openNewBtn">Yeni Bir Pencere Aç</div>
 </body>
+
+
+<script>
+    const electron = window.require('electron');
+    const { ipcRenderer } = electron;//veri transferi için kullanılır, event yollamak için kullanılır
+
+    let sendBtn = document.querySelector('#sendBtn1');
+    let imputValue = document.querySelector('#value');
+
+    let openNewBtn = document.querySelector('#openNewBtn');
+    openNewBtn.addEventListener('click', () => {
+        ipcRenderer.send('key:newWindow');
+    });
+
+    sendBtn.addEventListener('click', () => {
+        //alert('Test');
+        console.log("data")
+        
+        
+        //ipcRenderer.send('key', 'value, yani Denizhan');
+        ipcRenderer.send('key:inputValue', imputValue.value);
+    });
+</script>
 
 </html>
