@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "electron": "^33.3.1"
+  },
+  "name": "electron-todo",
+  "version": "1.0.0",
+  "main": "main.js",
+  "devDependencies": {},
+  "scripts": {
+    "start":"electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
