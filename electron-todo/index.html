@@ -66,9 +66,11 @@
         const deleteBtn = document.createElement('button');
         deleteBtn.className = "btn btn-sm btn-outline-danger flex-shrink-1";
         deleteBtn.innerHTML = "X";
-        deleteBtn.addEventListener('click', () => {
+        deleteBtn.addEventListener('click', (e) => {
             if (confirm('Silmek istediğinize emin misiniz?')) {
                 //TODO
+                e.target.parentNode.parentNode.remove();
+                checkTodoList();
             }
         });
 
